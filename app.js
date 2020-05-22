@@ -16,6 +16,7 @@ var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
 var salesRouter = require('./routes/sales');
 var categoriesRouter = require('./routes/categories');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/sales', validateUser, salesRouter);
 app.use('/categories', categoriesRouter);
+app.use('/admin', adminRouter);
 
 // Declaro el método validateUser 
 function validateUser (req, res, next) {
@@ -46,6 +48,18 @@ function validateUser (req, res, next) {
       res.json({message: err.message});
     } else {
       req.body.userToken = decoded;
+      next(); // Este next hace que continúe la ejecución del código
+    }
+  });
+}
+
+// Declaro el método validateAdmin 
+function validateAdmin (req, res, next) {
+  jwt.verify (req.headers ['x-access-token'], req.app.get('secretKey'), function (err, decoded) {
+    if (err) {
+      res.json({message: err.message});
+    } else {
+      req.body.adminToken = decoded;
       next(); // Este next hace que continúe la ejecución del código
     }
   });

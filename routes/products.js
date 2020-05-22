@@ -5,8 +5,8 @@ var productsController = require("../controllers/productsController");
 
 router.get('/', productsController.getAll);
 router.get('/featured', productsController.getFeatured);
-router.get('/:id', productsController.getById);
 router.get('/category/:id', productsController.getByCategory);
+router.get('/:id', productsController.getById);
 
 router.post('/', productsController.create);
 

@@ -1,17 +1,17 @@
-var mainModel = require("../models/usersModel");
+var mainModel = require("../models/adminModel");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
 
     getAll: async function (req, res, next) {
-        let users = await mainModel.find({});
-        res.status(200).json(users);
+        let admin = await mainModel.find({});
+        res.status(200).json(admin);
     },
 
     getById: async function (req, res, next) {
-        let user = await mainModel.findById(req.params.id);
-        res.status(200).json(user);
+        let admin = await mainModel.findById(req.params.id);
+        res.status(200).json(admin);
     },
 
     create: async function (req, res, next) {
@@ -19,22 +19,23 @@ module.exports = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
+            role: req.body.role,
             password: req.body.password
         });
         res.status(201).json({
-            "status": "User created successfully",
+            "status": "Admin created successfully",
         });
     },
 
     login: async function (req, res, next) {
         // Consulto por el usuario
-        let user = await mainModel.findOne({ email: req.body.email });
-        if (user) {
+        let admin = await mainModel.findOne({ email: req.body.email });
+        if (admin) {
             // Valido el password
-            if (bcrypt.compareSync(req.body.password, user.password)) {
+            if (bcrypt.compareSync(req.body.password, admin.password)) {
                 // Password válido: genero un token
                 const token = jwt.sign(
-                    { user: user },
+                    { admin: admin },
                     req.app.get('secretKey'),
                     { expiresIn: '1h' }
                 );
