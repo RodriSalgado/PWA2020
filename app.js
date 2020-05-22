@@ -19,7 +19,7 @@ var categoriesRouter = require('./routes/categories');
 
 var app = express();
 
-// Definimos la Secret Key
+// Defino la Secret Key
 app.set('secretKey', process.env.SECRET_KEY);
 
 // view engine setup
@@ -36,8 +36,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
-app.use('/sales', salesRouter);
+app.use('/sales', validateUser, salesRouter);
 app.use('/categories', categoriesRouter);
+
+// Declaro el método validateUser 
+function validateUser (req, res, next) {
+  jwt.verify (req.headers ['x-access-token'], req.app.get('secretKey'), function (err, decoded) {
+    if (err) {
+      res.json({message: err.message});
+    } else {
+      req.body.userToken = decoded;
+      next(); // Este next hace que continúe la ejecución del código
+    }
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

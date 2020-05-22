@@ -1,7 +1,7 @@
-const mongoose = require ('../bin/mongodb');
+const mongoose = require('../bin/mongodb');
 const Schema = mongoose.Schema;
 
-var productSchema = new Schema ({
+var productSchema = new Schema({
     product_id: {
         type: Schema.ObjectId,
         ref: "products"
@@ -17,7 +17,7 @@ var productSchema = new Schema ({
     }
 });
 
-const MainSchema = new Schema ({
+const MainSchema = new Schema({
     products: productSchema,
     date: {
         type: Date,
@@ -34,4 +34,4 @@ const MainSchema = new Schema ({
     }
 });
 
-module.exports = mongoose.model ('sales', MainSchema);
+module.exports = mongoose.model('sales', MainSchema);

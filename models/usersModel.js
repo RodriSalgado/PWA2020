@@ -21,14 +21,14 @@ const MainSchema = new Schema({
     },
     password: {
         type: String,
+        trim: true,
         required: true
     },
 })
 
 
-// Para usar bcrypt
+// Para usar bcrypt: middleware de "pre save". Agarra el password del modelo de usuarios, lo encripta y lo guarda encriptado.
 MainSchema.pre('save',function(next){
-    console.log(this.password)
     this.password = bcrypt.hashSync(this.password,10);
     next();
 })

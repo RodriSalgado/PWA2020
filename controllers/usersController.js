@@ -23,7 +23,6 @@ module.exports = {
         });
         res.status(201).json({
             "status": "User created successfully",
-            "data": data
         });
     },
 
@@ -34,7 +33,11 @@ module.exports = {
             // Valido el password
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 // Password válido: genero un token
-                const token = jwt.sign({ user: email }, req.app.get('secretKey'), { expiresIn: '1h' });
+                const token = jwt.sign(
+                    { user: user },
+                    req.app.get('secretKey'),
+                    { expiresIn: '1h' }
+                );
                 res.status(201).json({ token: token });
             } else {
                 // Password inválido
