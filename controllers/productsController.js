@@ -5,7 +5,7 @@ module.exports = {
     getAll: async function (req, res, next) {
         let products = await productsModel.paginate({}, {
             populate: 'category',
-            limit: 2,
+            limit: 10,
             sort: { name: 1 },
             page: (req.query.page ? req.query.page : 1)
         })
@@ -27,7 +27,7 @@ module.exports = {
         /* let products = await productsModel.find({'category': req.params.id}); */
         let products = await productsModel.paginate({ category: req.params.id }, {
             populate: 'category',
-            limit: 2,
+            limit: 10,
             sort: { name: 1 },
             page: (req.query.page ? req.query.page : 1)
         });
