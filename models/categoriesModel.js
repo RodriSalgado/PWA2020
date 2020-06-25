@@ -9,4 +9,7 @@ const MainSchema = new Schema({
     }
 })
 
+// Para usar Paginate
+MainSchema.plugin(mongoose.mongoosePaginate);
+
 module.exports = mongoose.model('categories', MainSchema);

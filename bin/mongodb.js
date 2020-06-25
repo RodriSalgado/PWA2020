@@ -10,7 +10,7 @@ mongoose.connect('mongodb://'+process.env.BD_HOST+'/proyectoFinal', { useNewUrlP
 });
 
 mongoosePaginate.paginate.options = {
-    lean: true,
+    lean: false,
     limit: 1
 };
 

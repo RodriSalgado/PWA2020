@@ -44,6 +44,10 @@ const MainSchema = new Schema({
 })
 MainSchema.set('toJSON',{getters:true,virtuals:true}) */
 
+MainSchema.virtual('price_currency').get(function(){
+    return "$ " + this.price
+})
+MainSchema.set('toJSON',{getters:true,virtuals:true})
 
 // Para usar Paginate
 MainSchema.plugin(mongoose.mongoosePaginate);

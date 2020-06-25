@@ -3,6 +3,15 @@ var categoriesModel = require("../models/categoriesModel");
 module.exports = {
     
     getAll: async function (req, res, next) {
+        let categories = await categoriesModel.paginate({}, {
+            limit: 2,
+            sort: { name: 1 },
+            page: (req.query.page ? req.query.page : 1)
+        })
+        res.status(200).json(categories);
+    },
+
+    getAllSinPaginado: async function (req, res, next) {
         let categories = await categoriesModel.find({});
         res.status(200).json(categories);
     },
