@@ -1,6 +1,17 @@
 const mongoose = require('../bin/mongodb');
 const Schema = mongoose.Schema;
 
+var imgSchema = mongoose.Schema({
+    fieldname: "String",
+    originalname: "String",
+    encoding: "String",
+    mimetype: "String",
+    destination: "String",
+    filename: "String",
+    path: "String",
+    size: "String",
+});
+
 const MainSchema = new Schema({
     name: {
         type: String,
@@ -26,11 +37,11 @@ const MainSchema = new Schema({
         type: Schema.ObjectId,
         ref: "categories"
     },
-    featured: Number
+    featured: Number,
+    images: imgSchema,
 
     /* 
     discountedPrice: {},
-    image: {},
     tags: {},
     related: {}
     */
@@ -44,10 +55,10 @@ const MainSchema = new Schema({
 })
 MainSchema.set('toJSON',{getters:true,virtuals:true}) */
 
-MainSchema.virtual('price_currency').get(function(){
+MainSchema.virtual('price_currency').get(function () {
     return "$ " + this.price
 })
-MainSchema.set('toJSON',{getters:true,virtuals:true})
+MainSchema.set('toJSON', { getters: true, virtuals: true })
 
 // Para usar Paginate
 MainSchema.plugin(mongoose.mongoosePaginate);

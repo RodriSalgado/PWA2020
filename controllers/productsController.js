@@ -1,6 +1,11 @@
 var productsModel = require("../models/productsModel");
 var categoriesModel = require("../models/categoriesModel");
 
+// Upload de imágenes
+var multer = require('multer');
+var DIR = './public/images/';
+var upload = multer({ dest: DIR }).single('photo');
+
 module.exports = {
     getAll: async function (req, res, next) {
         let products = await productsModel.paginate({}, {
@@ -42,7 +47,8 @@ module.exports = {
             description: req.body.description,
             quantity: req.body.quantity,
             category: req.body.category,
-            featured: req.body.featured
+            featured: req.body.featured,
+            images: req.body.images
         });
         let data = await product.save();
         res.status(201).json({
@@ -66,5 +72,28 @@ module.exports = {
             "status": "Product deleted successfully",
             "data": data
         });
+    },
+
+    upload: async function (req, res, next) {
+        try {
+            var path = '';
+            upload(req, res, function (err) {
+                if (err) {
+                    // An error occurred when uploading
+                    console.log(err);
+                    next();
+                }
+                // No error occurred
+                path = req.file.path;
+                res.status(201).json({
+                    status: "success",
+                    message: "Imagen cargada exitosamente",
+                    data: req.file
+                });
+            });
+        } catch (e) {
+            console.log(e);
+            next(e);
+        }
     }
 }
